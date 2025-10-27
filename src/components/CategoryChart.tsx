@@ -1,5 +1,12 @@
 import { Card } from "./ui/card";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
 
 const data = [
   { name: "Electronics", value: 4500, color: "#3b82f6" },
@@ -14,7 +21,9 @@ export function CategoryChart() {
     <Card className="p-6">
       <div className="mb-6">
         <h3 className="text-gray-900">Sales by Category</h3>
-        <p className="text-sm text-gray-500 mt-1">Revenue distribution across categories</p>
+        <p className="text-sm text-gray-500 mt-1">
+          Revenue distribution across categories
+        </p>
       </div>
 
       <ResponsiveContainer width="100%" height={280}>
@@ -46,7 +55,9 @@ export function CategoryChart() {
             />
             <div className="flex-1">
               <p className="text-sm text-gray-600">{category.name}</p>
-              <p className="text-xs text-gray-500">${category.value.toLocaleString()}</p>
+              <p className="text-xs text-gray-500">
+                ${category.value.toLocaleString()}
+              </p>
             </div>
           </div>
         ))}

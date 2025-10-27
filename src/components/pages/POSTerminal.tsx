@@ -3,17 +3,17 @@ import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Badge } from "../ui/badge";
-import { 
-  Search, 
-  Plus, 
-  Minus, 
-  Trash2, 
-  CreditCard, 
+import {
+  Search,
+  Plus,
+  Minus,
+  Trash2,
+  CreditCard,
   DollarSign,
   User,
   ShoppingCart,
   Printer,
-  X
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -51,14 +51,70 @@ interface Product {
 }
 
 const products: Product[] = [
-  { id: "PRD-001", name: "Wireless Headphones", price: 12999, stock: 45, category: "Electronics", image: "🎧" },
-  { id: "PRD-002", name: "Smart Watch Pro", price: 29999, stock: 8, category: "Electronics", image: "⌚" },
-  { id: "PRD-003", name: "Laptop Stand", price: 4999, stock: 122, category: "Accessories", image: "💻" },
-  { id: "PRD-004", name: "USB-C Hub", price: 7999, stock: 5, category: "Accessories", image: "🔌" },
-  { id: "PRD-005", name: "Mechanical Keyboard", price: 15999, stock: 67, category: "Electronics", image: "⌨️" },
-  { id: "PRD-006", name: "Gaming Mouse", price: 8999, stock: 3, category: "Electronics", image: "🖱️" },
-  { id: "PRD-007", name: "Desk Organizer", price: 3499, stock: 89, category: "Furniture", image: "📦" },
-  { id: "PRD-008", name: "Monitor Arm", price: 14999, stock: 34, category: "Furniture", image: "🖥️" },
+  {
+    id: "PRD-001",
+    name: "Wireless Headphones",
+    price: 12999,
+    stock: 45,
+    category: "Electronics",
+    image: "🎧",
+  },
+  {
+    id: "PRD-002",
+    name: "Smart Watch Pro",
+    price: 29999,
+    stock: 8,
+    category: "Electronics",
+    image: "⌚",
+  },
+  {
+    id: "PRD-003",
+    name: "Laptop Stand",
+    price: 4999,
+    stock: 122,
+    category: "Accessories",
+    image: "💻",
+  },
+  {
+    id: "PRD-004",
+    name: "USB-C Hub",
+    price: 7999,
+    stock: 5,
+    category: "Accessories",
+    image: "🔌",
+  },
+  {
+    id: "PRD-005",
+    name: "Mechanical Keyboard",
+    price: 15999,
+    stock: 67,
+    category: "Electronics",
+    image: "⌨️",
+  },
+  {
+    id: "PRD-006",
+    name: "Gaming Mouse",
+    price: 8999,
+    stock: 3,
+    category: "Electronics",
+    image: "🖱️",
+  },
+  {
+    id: "PRD-007",
+    name: "Desk Organizer",
+    price: 3499,
+    stock: 89,
+    category: "Furniture",
+    image: "📦",
+  },
+  {
+    id: "PRD-008",
+    name: "Monitor Arm",
+    price: 14999,
+    stock: 34,
+    category: "Furniture",
+    image: "🖥️",
+  },
 ];
 
 export function POSTerminal() {
@@ -72,63 +128,74 @@ export function POSTerminal() {
   const [showReceiptDialog, setShowReceiptDialog] = useState(false);
   const [lastTransaction, setLastTransaction] = useState<any>(null);
 
-  const categories = ["all", ...Array.from(new Set(products.map(p => p.category)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(products.map((p) => p.category))),
+  ];
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const addToCart = (product: Product) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    
+    const existingItem = cart.find((item) => item.id === product.id);
+
     if (existingItem) {
       if (existingItem.quantity < product.stock) {
-        setCart(cart.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        ));
+        setCart(
+          cart.map((item) =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
         toast.success(`Added ${product.name} to cart`);
       } else {
         toast.error("Insufficient stock");
       }
     } else {
-      setCart([...cart, {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1,
-        image: product.image,
-      }]);
+      setCart([
+        ...cart,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          image: product.image,
+        },
+      ]);
       toast.success(`Added ${product.name} to cart`);
     }
   };
 
   const updateQuantity = (id: string, change: number) => {
-    const item = cart.find(i => i.id === id);
-    const product = products.find(p => p.id === id);
-    
+    const item = cart.find((i) => i.id === id);
+    const product = products.find((p) => p.id === id);
+
     if (!item || !product) return;
-    
+
     const newQuantity = item.quantity + change;
-    
+
     if (newQuantity <= 0) {
       removeFromCart(id);
     } else if (newQuantity <= product.stock) {
-      setCart(cart.map(cartItem =>
-        cartItem.id === id
-          ? { ...cartItem, quantity: newQuantity }
-          : cartItem
-      ));
+      setCart(
+        cart.map((cartItem) =>
+          cartItem.id === id ? { ...cartItem, quantity: newQuantity } : cartItem
+        )
+      );
     } else {
       toast.error("Insufficient stock");
     }
   };
 
   const removeFromCart = (id: string) => {
-    setCart(cart.filter(item => item.id !== id));
+    setCart(cart.filter((item) => item.id !== id));
     toast.info("Item removed from cart");
   };
 
@@ -137,7 +204,10 @@ export function POSTerminal() {
     toast.info("Cart cleared");
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const tax = subtotal * 0.085; // 8.5% tax
   const total = subtotal + tax;
 
@@ -165,14 +235,17 @@ export function POSTerminal() {
 
     // Create transaction
     const transaction = {
-      orderId: `ORD-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`,
+      orderId: `ORD-${Math.floor(Math.random() * 10000)
+        .toString()
+        .padStart(4, "0")}`,
       customer: customerName,
       items: cart,
       subtotal,
       tax,
       total,
       paymentMethod,
-      amountReceived: paymentMethod === "cash" ? parseFloat(amountReceived) : total,
+      amountReceived:
+        paymentMethod === "cash" ? parseFloat(amountReceived) : total,
       change: paymentMethod === "cash" ? parseFloat(amountReceived) - total : 0,
       date: new Date().toLocaleString(),
     };
@@ -183,7 +256,7 @@ export function POSTerminal() {
     setCart([]);
     setCustomerName("");
     setAmountReceived("");
-    
+
     toast.success("Payment processed successfully!");
   };
 
@@ -192,9 +265,10 @@ export function POSTerminal() {
     toast.success("Printing receipt...");
   };
 
-  const change = paymentMethod === "cash" && amountReceived 
-    ? Math.max(0, parseFloat(amountReceived) - total)
-    : 0;
+  const change =
+    paymentMethod === "cash" && amountReceived
+      ? Math.max(0, parseFloat(amountReceived) - total)
+      : 0;
 
   return (
     <div className="space-y-6">
@@ -225,7 +299,10 @@ export function POSTerminal() {
                   className="pl-9"
                 />
               </div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger className="w-40">
                   <SelectValue />
                 </SelectTrigger>
@@ -248,11 +325,17 @@ export function POSTerminal() {
                 >
                   <div className="text-center">
                     <div className="text-4xl mb-2">{product.image}</div>
-                    <p className="text-sm text-gray-900 mb-1 line-clamp-2">{product.name}</p>
-                    <p className="text-sm text-gray-900">Rs {product.price.toLocaleString()}</p>
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs mt-2 ${product.stock < 10 ? 'border-red-300 text-red-700' : ''}`}
+                    <p className="text-sm text-gray-900 mb-1 line-clamp-2">
+                      {product.name}
+                    </p>
+                    <p className="text-sm text-gray-900">
+                      Rs {product.price.toLocaleString()}
+                    </p>
+                    <Badge
+                      variant="outline"
+                      className={`text-xs mt-2 ${
+                        product.stock < 10 ? "border-red-300 text-red-700" : ""
+                      }`}
                     >
                       Stock: {product.stock}
                     </Badge>
@@ -287,11 +370,18 @@ export function POSTerminal() {
             ) : (
               <div className="space-y-3 max-h-64 overflow-y-auto mb-4">
                 {cart.map((item) => (
-                  <div key={item.id} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg"
+                  >
                     <div className="text-2xl">{item.image}</div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900 truncate">{item.name}</p>
-                      <p className="text-xs text-gray-500">Rs {item.price.toLocaleString()}</p>
+                      <p className="text-sm text-gray-900 truncate">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Rs {item.price.toLocaleString()}
+                      </p>
                     </div>
                     <div className="flex items-center gap-1">
                       <Button
@@ -302,7 +392,9 @@ export function POSTerminal() {
                       >
                         <Minus className="w-3 h-3" />
                       </Button>
-                      <span className="text-sm w-8 text-center">{item.quantity}</span>
+                      <span className="text-sm w-8 text-center">
+                        {item.quantity}
+                      </span>
                       <Button
                         variant="outline"
                         size="sm"
@@ -328,15 +420,21 @@ export function POSTerminal() {
             <div className="space-y-2 border-t pt-4">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal:</span>
-                <span className="text-gray-900">Rs {subtotal.toLocaleString()}</span>
+                <span className="text-gray-900">
+                  Rs {subtotal.toLocaleString()}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Tax (8.5%):</span>
-                <span className="text-gray-900">Rs {Math.round(tax).toLocaleString()}</span>
+                <span className="text-gray-900">
+                  Rs {Math.round(tax).toLocaleString()}
+                </span>
               </div>
               <div className="flex justify-between border-t pt-2">
                 <span className="text-gray-900">Total:</span>
-                <span className="text-gray-900">Rs {Math.round(total).toLocaleString()}</span>
+                <span className="text-gray-900">
+                  Rs {Math.round(total).toLocaleString()}
+                </span>
               </div>
             </div>
 
@@ -356,12 +454,20 @@ export function POSTerminal() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Items in cart:</span>
-                <span className="text-gray-900">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
+                <span className="text-gray-900">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Average item price:</span>
                 <span className="text-gray-900">
-                  Rs {cart.length > 0 ? Math.round(subtotal / cart.reduce((sum, item) => sum + item.quantity, 0)).toLocaleString() : '0'}
+                  Rs{" "}
+                  {cart.length > 0
+                    ? Math.round(
+                        subtotal /
+                          cart.reduce((sum, item) => sum + item.quantity, 0)
+                      ).toLocaleString()
+                    : "0"}
                 </span>
               </div>
             </div>
@@ -381,7 +487,7 @@ export function POSTerminal() {
             <div className="bg-blue-50 p-4 rounded-lg">
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Total Amount:</span>
-                <span className="text-gray-900">${total.toFixed(2)}</span>
+                <span className="text-gray-900">PKR {total.toFixed(2)}</span>
               </div>
             </div>
 
@@ -419,7 +525,9 @@ export function POSTerminal() {
                   <div className="bg-green-50 p-3 rounded-lg">
                     <div className="flex justify-between text-sm">
                       <span className="text-green-700">Change:</span>
-                      <span className="text-green-900">Rs {Math.round(change).toLocaleString()}</span>
+                      <span className="text-green-900">
+                        Rs {Math.round(change).toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 )}
@@ -427,7 +535,11 @@ export function POSTerminal() {
             )}
 
             <div className="flex gap-2 pt-4">
-              <Button variant="outline" className="flex-1" onClick={() => setShowPaymentDialog(false)}>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowPaymentDialog(false)}
+              >
                 Cancel
               </Button>
               <Button className="flex-1" onClick={processPayment}>
@@ -444,7 +556,9 @@ export function POSTerminal() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Transaction Complete</DialogTitle>
-            <DialogDescription>Receipt generated successfully</DialogDescription>
+            <DialogDescription>
+              Receipt generated successfully
+            </DialogDescription>
           </DialogHeader>
 
           {lastTransaction && (
@@ -452,26 +566,38 @@ export function POSTerminal() {
               <Card className="p-4 bg-white" id="receipt">
                 <div className="text-center border-b pb-3 mb-3">
                   <h3 className="text-gray-900">POS System Store</h3>
-                  <p className="text-xs text-gray-500">123 Main Street, New York, NY</p>
-                  <p className="text-xs text-gray-500">Phone: +1 (555) 123-4567</p>
+                  <p className="text-xs text-gray-500">
+                    123 Main Street, New York, NY
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Phone: +1 (555) 123-4567
+                  </p>
                 </div>
 
                 <div className="space-y-2 text-sm border-b pb-3 mb-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Order:</span>
-                    <span className="text-gray-900">{lastTransaction.orderId}</span>
+                    <span className="text-gray-900">
+                      {lastTransaction.orderId}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Customer:</span>
-                    <span className="text-gray-900">{lastTransaction.customer}</span>
+                    <span className="text-gray-900">
+                      {lastTransaction.customer}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Date:</span>
-                    <span className="text-gray-900">{lastTransaction.date}</span>
+                    <span className="text-gray-900">
+                      {lastTransaction.date}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Payment:</span>
-                    <span className="text-gray-900 capitalize">{lastTransaction.paymentMethod}</span>
+                    <span className="text-gray-900 capitalize">
+                      {lastTransaction.paymentMethod}
+                    </span>
                   </div>
                 </div>
 
@@ -491,25 +617,39 @@ export function POSTerminal() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal:</span>
-                    <span className="text-gray-900">Rs {Math.round(lastTransaction.subtotal).toLocaleString()}</span>
+                    <span className="text-gray-900">
+                      Rs {Math.round(lastTransaction.subtotal).toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tax:</span>
-                    <span className="text-gray-900">Rs {Math.round(lastTransaction.tax).toLocaleString()}</span>
+                    <span className="text-gray-900">
+                      Rs {Math.round(lastTransaction.tax).toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between border-t pt-2">
                     <span className="text-gray-900">Total:</span>
-                    <span className="text-gray-900">Rs {Math.round(lastTransaction.total).toLocaleString()}</span>
+                    <span className="text-gray-900">
+                      Rs {Math.round(lastTransaction.total).toLocaleString()}
+                    </span>
                   </div>
                   {lastTransaction.paymentMethod === "cash" && (
                     <>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Paid:</span>
-                        <span className="text-gray-900">Rs {Math.round(lastTransaction.amountReceived).toLocaleString()}</span>
+                        <span className="text-gray-900">
+                          Rs{" "}
+                          {Math.round(
+                            lastTransaction.amountReceived
+                          ).toLocaleString()}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Change:</span>
-                        <span className="text-gray-900">Rs {Math.round(lastTransaction.change).toLocaleString()}</span>
+                        <span className="text-gray-900">
+                          Rs{" "}
+                          {Math.round(lastTransaction.change).toLocaleString()}
+                        </span>
                       </div>
                     </>
                   )}
@@ -521,7 +661,11 @@ export function POSTerminal() {
               </Card>
 
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1" onClick={() => setShowReceiptDialog(false)}>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowReceiptDialog(false)}
+                >
                   Close
                 </Button>
                 <Button className="flex-1" onClick={printReceipt}>
