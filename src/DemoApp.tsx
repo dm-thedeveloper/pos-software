@@ -10,13 +10,13 @@ import { Toaster } from "./components/ui/sonner";
 import { Button } from "./components/ui/button";
 import { Home, X } from "lucide-react";
 
-type DemoScreen = 
-  | "landing" 
-  | "dashboard" 
-  | "pos" 
-  | "business-types" 
-  | "pricing" 
-  | "contact" 
+type DemoScreen =
+  | "landing"
+  | "dashboard"
+  | "pos"
+  | "business-types"
+  | "pricing"
+  | "contact"
   | "end"
   | "products"
   | "customers"
@@ -40,7 +40,9 @@ export default function DemoApp() {
       setCurrentScreen("pos");
     } else if (page === "business-types") {
       setCurrentScreen("business-types");
-    } else if (["products", "customers", "reports", "accounting"].includes(page)) {
+    } else if (
+      ["products", "customers", "reports", "accounting"].includes(page)
+    ) {
       // Show full app for these pages
       setShowMainApp(true);
     }
@@ -84,7 +86,14 @@ export default function DemoApp() {
   return (
     <div className="relative min-h-screen">
       {/* Bottom Navigation - Only show on dashboard and related screens */}
-      {["dashboard", "pos", "products", "customers", "reports", "accounting"].includes(currentScreen) && (
+      {[
+        "dashboard",
+        "pos",
+        "products",
+        "customers",
+        "reports",
+        "accounting",
+      ].includes(currentScreen) && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 shadow-lg z-50">
           <div className="flex justify-around items-center max-w-md mx-auto">
             <Button
@@ -149,9 +158,7 @@ export default function DemoApp() {
           <DemoDashboard onNavigate={handleNavigate} />
         )}
 
-        {currentScreen === "pos" && (
-          <DemoPOS onBack={handleBackToDashboard} />
-        )}
+        {currentScreen === "pos" && <DemoPOS onBack={handleBackToDashboard} />}
 
         {currentScreen === "business-types" && (
           <BusinessTypeSelector onBack={handleBackToDashboard} />
@@ -165,9 +172,7 @@ export default function DemoApp() {
           <ContactScreen onBack={handleBackToDashboard} />
         )}
 
-        {currentScreen === "end" && (
-          <EndScreen onRestart={handleRestart} />
-        )}
+        {currentScreen === "end" && <EndScreen onRestart={handleRestart} />}
       </div>
 
       <Toaster position="top-center" />

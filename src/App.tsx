@@ -19,7 +19,7 @@ import { Smartphone, Monitor } from "lucide-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [viewMode, setViewMode] = useState<"demo" | "full">("demo");
+  const [viewMode, setViewMode] = useState<"demo" | "full">("full");
 
   const renderPage = () => {
     switch (activeTab) {
@@ -86,17 +86,15 @@ export default function App() {
       </div>
 
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-      
+
       <div className="flex-1 flex flex-col">
         <Header />
-        
+
         <main className="flex-1 p-8 overflow-auto">
-          <div className="max-w-7xl mx-auto">
-            {renderPage()}
-          </div>
+          <div className="max-w-7xl mx-auto">{renderPage()}</div>
         </main>
       </div>
-      
+
       <Toaster position="top-right" />
     </div>
   );
