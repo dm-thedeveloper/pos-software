@@ -18,16 +18,27 @@ export function Dashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full ">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-gray-900 mb-1">Dashboard Overview</h2>
-          <p className="text-gray-500">Welcome back! Here's what's happening with your store today.</p>
+          <p className="text-gray-500">
+            Welcome back! Here's what's happening with your store today.
+          </p>
         </div>
         <div className="flex items-center gap-3">
-          <DateRangeFilter selectedRange={dateRange} onRangeChange={setDateRange} />
-          <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+          <DateRangeFilter
+            selectedRange={dateRange}
+            onRangeChange={setDateRange}
+          />
+          <Button
+            variant="outline"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw
+              className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+            />
             Refresh
           </Button>
           <Button>
@@ -38,7 +49,7 @@ export function Dashboard() {
       </div>
 
       <StatsCards />
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <SalesChart />

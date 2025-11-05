@@ -33,7 +33,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   ];
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 h-screen flex flex-col">
+    <div className="hidden sm:flex   w-64 bg-white border-r border-gray-200 h-screen  flex-col">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">

@@ -51,29 +51,29 @@ export default function App() {
   };
 
   // Show demo mode by default
-  if (viewMode === "demo") {
-    return (
-      <>
-        <div className="fixed top-4 right-4 z-50">
-          <Button
-            variant="outline"
-            size="sm"
-            className="bg-white shadow-lg border-2 border-[#1C64F2]"
-            onClick={() => setViewMode("full")}
-          >
-            <Monitor className="w-4 h-4 mr-2" />
-            Full System View
-          </Button>
-        </div>
-        <DemoApp />
-      </>
-    );
-  }
+  // if (viewMode === "demo") {
+  //   return (
+  //     <>
+  //       <div className="fixed top-4 bg-red-900 right-4 z-50">
+  //         <Button
+  //           variant="outline"
+  //           size="sm"
+  //           className="bg-white shadow-lg border-2 border-[#1C64F2]"
+  //           onClick={() => setViewMode("full")}
+  //         >
+  //           <Monitor className="w-4 h-4 mr-2" />
+  //           Full System View
+  //         </Button>
+  //       </div>
+  //       <DemoApp />
+  //     </>
+  //   );
+  // }
 
   // Full desktop app view
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <div className="fixed top-4 right-4 z-50">
+      {/* <div className="fixed top-4 right-4 z-50">
         <Button
           variant="outline"
           size="sm"
@@ -83,7 +83,7 @@ export default function App() {
           <Smartphone className="w-4 h-4 mr-2" />
           Demo Mode
         </Button>
-      </div>
+      </div> */}
 
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
